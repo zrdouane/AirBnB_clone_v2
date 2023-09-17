@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from os import getenv
+import models
 from models.base_model import BaseModel, Base
 from models.amenity import Amenity
 from models.review import Review
@@ -23,6 +24,7 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, default=0)
         latitude = Column(Float)
         longitude = Column(Float)
+        review = relationship("Review", backref="place", cascade="delete")
 
     else:
         city_id = ""
@@ -36,3 +38,12 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+
+    if getenv("HBNB_TYPE_STORAGE") != 'db':
+        @property
+        def reviews(self):
+            """ return the list of Review instances linked to the place"""
+            list_reviews = []
+            for review in list(models.storage.all(Review).values()):
+                list_reviews.append(review)
+            return list_reviews
