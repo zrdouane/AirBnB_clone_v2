@@ -12,6 +12,7 @@ env.hosts = ["54.210.98.167", "3.84.255.123"]
 
 
 def do_pack():
+    """generates a tgz archive"""
     dt = datetime.utcnow()
     file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year,
                                                          dt.month,
@@ -28,6 +29,7 @@ def do_pack():
 
 
 def do_deploy(archive_path):
+    """distributes an archive to the web servers"""
     if os.path.isfile(archive_path) is False:
         return False
     file = archive_path.split("/")[-1]
@@ -61,6 +63,7 @@ def do_deploy(archive_path):
 
 
 def deploy():
+    """creates and distributes an archive to the web servers"""
     file = do_pack()
     if file is None:
         return False
