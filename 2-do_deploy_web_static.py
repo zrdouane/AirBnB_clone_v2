@@ -15,6 +15,9 @@ api.env.key_filename = '/root/.ssh/school'
 
 
 def do_deploy(archive_path):
+    """
+    distributes an archive to your web servers.
+    """
     if not os.path.isfile(archive_path):
         return False
     with api.cd('/tmp'):
@@ -33,7 +36,7 @@ def do_deploy(archive_path):
             api.run('rm -rf /data/web_static/current')
             api.run('ln -sf {} /data/web_static/current'.format(outpath))
             print('New version deployed!')
-        except Exception:
+        except:
             return False
         else:
             return True
